@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="980" viewBox="0 0 1500 980">
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
+</marker>
+</defs>
+<rect x="0" y="0" width="1500" height="980" fill="#ffffff"/>
+<text x="50" y="45" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="26" font-weight="bold" fill="#0f172a" text-anchor="start" opacity="1.0">ESP32-S3 多模态 AI 游戏掌机 · 系统框图</text>
+<text x="50" y="75" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="13" font-weight="normal" fill="#475569" text-anchor="start" opacity="1.0">三固件：factory 主系统 / ota_0 游戏 / ota_1 AI；三套二进制共享 BSP 与驱动源码，切换时重启并清空 RAM</text>
+<rect x="560" y="250" width="380" height="400" rx="16" ry="16" fill="#1e3a8a" stroke="#172554" stroke-width="2"/>
+<text x="750" y="285" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="18" font-weight="bold" fill="#ffffff" text-anchor="middle" opacity="1.0">ESP32-S3-WROOM-1U-N16R8</text>
+<text x="750" y="312" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="12" font-weight="normal" fill="#dbeafe" text-anchor="middle" opacity="1.0">双核 Xtensa LX7 @ 240 MHz</text>
+<text x="750" y="334" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="12" font-weight="normal" fill="#dbeafe" text-anchor="middle" opacity="1.0">8MB Octal PSRAM · 16MB Flash</text>
+<text x="750" y="356" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="12" font-weight="normal" fill="#dbeafe" text-anchor="middle" opacity="1.0">Wi-Fi 2.4G · Bluetooth LE 5.0</text>
+<rect x="580" y="380" width="160" height="52" rx="7" ry="7" fill="#3b82f6" stroke="#93c5fd" stroke-width="1"/>
+<text x="660.0" y="401" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle" opacity="1.0">CPU</text>
+<text x="660.0" y="420" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="10" font-weight="normal" fill="#eff6ff" text-anchor="middle" opacity="1.0">双核 240 MHz</text>
+<rect x="760" y="380" width="160" height="52" rx="7" ry="7" fill="#3b82f6" stroke="#93c5fd" stroke-width="1"/>
+<text x="840.0" y="401" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle" opacity="1.0">存储</text>
+<text x="840.0" y="420" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="10" font-weight="normal" fill="#eff6ff" text-anchor="middle" opacity="1.0">PSRAM + Flash</text>
+<rect x="580" y="450" width="160" height="52" rx="7" ry="7" fill="#3b82f6" stroke="#93c5fd" stroke-width="1"/>
+<text x="660.0" y="471" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle" opacity="1.0">无线</text>
+<text x="660.0" y="490" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="10" font-weight="normal" fill="#eff6ff" text-anchor="middle" opacity="1.0">Wi-Fi / BLE</text>
+<rect x="760" y="450" width="160" height="52" rx="7" ry="7" fill="#3b82f6" stroke="#93c5fd" stroke-width="1"/>
+<text x="840.0" y="471" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle" opacity="1.0">外设</text>
+<text x="840.0" y="490" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="10" font-weight="normal" fill="#eff6ff" text-anchor="middle" opacity="1.0">SPI / I2S / I2C</text>
+<text x="580" y="530" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="11" font-weight="bold" fill="#dbeafe" text-anchor="start" opacity="1.0">Flash 分区（16MB）</text>
+<rect x="580.0" y="538" width="85.0" height="40" fill="#1d4ed8" stroke="#93c5fd" stroke-width="0.8"/>
+<text x="622.5" y="555" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="10" font-weight="bold" fill="#ffffff" text-anchor="middle" opacity="1.0">factory</text>
+<text x="622.5" y="570" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="9" font-weight="normal" fill="#dbeafe" text-anchor="middle" opacity="1.0">主系统 4MB</text>
+<rect x="665.0" y="538" width="85.0" height="40" fill="#2563eb" stroke="#93c5fd" stroke-width="0.8"/>
+<text x="707.5" y="555" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="10" font-weight="bold" fill="#ffffff" text-anchor="middle" opacity="1.0">ota_0</text>
+<text x="707.5" y="570" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="9" font-weight="normal" fill="#dbeafe" text-anchor="middle" opacity="1.0">游戏 4MB</text>
+<rect x="750.0" y="538" width="85.0" height="40" fill="#1d4ed8" stroke="#93c5fd" stroke-width="0.8"/>
+<text x="792.5" y="555" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="10" font-weight="bold" fill="#ffffff" text-anchor="middle" opacity="1.0">ota_1</text>
+<text x="792.5" y="570" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="9" font-weight="normal" fill="#dbeafe" text-anchor="middle" opacity="1.0">AI 4MB</text>
+<rect x="835.0" y="538" width="85.0" height="40" fill="#2563eb" stroke="#93c5fd" stroke-width="0.8"/>
+<text x="877.5" y="555" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="10" font-weight="bold" fill="#ffffff" text-anchor="middle" opacity="1.0">assets</text>
+<text x="877.5" y="570" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="9" font-weight="normal" fill="#dbeafe" text-anchor="middle" opacity="1.0">资源 3.94MB</text>
+<text x="750" y="610" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="11" font-weight="normal" fill="#bfdbfe" text-anchor="middle" opacity="1.0">DMA 双缓冲 · PSRAM 帧缓冲 · 三固件独立运行</text>
+<rect x="60" y="130" width="230" height="90" rx="10" ry="10" fill="#e0f2fe" stroke="#0369a1" stroke-width="1.5"/>
+<text x="175.0" y="154" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="15" font-weight="bold" fill="#0f172a" text-anchor="middle" opacity="1.0">ST7789 彩屏</text>
+<text x="175.0" y="176" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="11" font-weight="normal" fill="#475569" text-anchor="middle" opacity="1.0">240×280 · SPI2 · CS42</text>
+<text x="175.0" y="193" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="11" font-weight="normal" fill="#475569" text-anchor="middle" opacity="1.0">DC43 / BL44 · DMA 双缓冲</text>
+<rect x="60" y="245" width="230" height="95" rx="10" ry="10" fill="#e0f2fe" stroke="#0369a1" stroke-width="1.5"/>
+<text x="175.0" y="269" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="15" font-weight="bold" fill="#0f172a" text-anchor="middle" opacity="1.0">8 键输入</text>
+<text x="175.0" y="291" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="11" font-weight="normal" fill="#475569" text-anchor="middle" opacity="1.0">UP/DOWN/LEFT/RIGHT</text>
+<text x="175.0" y="308" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="11" font-weight="normal" fill="#475569" text-anchor="middle" opacity="1.0">A/B/START / CTRL=GPIO8</text>
+<rect x="60" y="365" width="230" height="100" rx="10" ry="10" fill="#e0f2fe" stroke="#0369a1" stroke-width="1.5"/>
+<text x="175.0" y="389" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="15" font-weight="bold" fill="#0f172a" text-anchor="middle" opacity="1.0">传感器</text>
+<text x="175.0" y="411" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="11" font-weight="normal" fill="#475569" text-anchor="middle" opacity="1.0">LSM6DS3TR-C 六轴 IMU</text>
+<text x="175.0" y="428" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="11" font-weight="normal" fill="#475569" text-anchor="middle" opacity="1.0">AHT20 温湿度（可选外挂）</text>
+<text x="175.0" y="445" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="11" font-weight="normal" fill="#475569" text-anchor="middle" opacity="1.0">I2C · IMU 无 INT</text>
+<rect x="60" y="490" width="230" height="120" rx="10" ry="10" fill="#e0f2fe" stroke="#0369a1" stroke-width="1.5"/>
+<text x="175.0" y="514" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="15" font-weight="bold" fill="#0f172a" text-anchor="middle" opacity="1.0">音频子系统</text>
+<text x="175.0" y="536" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="11" font-weight="normal" fill="#475569" text-anchor="middle" opacity="1.0">MSM261 数字麦克风 (I2S0)</text>
+<text x="175.0" y="553" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="11" font-weight="normal" fill="#475569" text-anchor="middle" opacity="1.0">MAX98357 功放 (I2S1)</text>
+<text x="175.0" y="570" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="11" font-weight="normal" fill="#475569" text-anchor="middle" opacity="1.0">扬声器 / 音量 / 增益</text>
+<rect x="60" y="635" width="230" height="75" rx="10" ry="10" fill="#f3e8ff" stroke="#7e22ce" stroke-width="1.5"/>
+<text x="175.0" y="659" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="15" font-weight="bold" fill="#0f172a" text-anchor="middle" opacity="1.0">microSD 卡</text>
+<text x="175.0" y="681" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="11" font-weight="normal" fill="#475569" text-anchor="middle" opacity="1.0">SPI3 · CS38/CLK40</text>
+<text x="175.0" y="698" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="11" font-weight="normal" fill="#475569" text-anchor="middle" opacity="1.0">ROM / 存档 / 资源 · 无 CD</text>
+<rect x="1200" y="150" width="250" height="110" rx="10" ry="10" fill="#dcfce7" stroke="#15803d" stroke-width="1.5"/>
+<text x="1325.0" y="174" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="15" font-weight="bold" fill="#0f172a" text-anchor="middle" opacity="1.0">云端 AI</text>
+<text x="1325.0" y="196" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="11" font-weight="normal" fill="#475569" text-anchor="middle" opacity="1.0">ASR / LLM / TTS</text>
+<text x="1325.0" y="213" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="11" font-weight="normal" fill="#475569" text-anchor="middle" opacity="1.0">HTTPS · WebSocket</text>
+<rect x="1200" y="290" width="250" height="95" rx="10" ry="10" fill="#dcfce7" stroke="#15803d" stroke-width="1.5"/>
+<text x="1325.0" y="314" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="15" font-weight="bold" fill="#0f172a" text-anchor="middle" opacity="1.0">PC / 手机</text>
+<text x="1325.0" y="336" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="11" font-weight="normal" fill="#475569" text-anchor="middle" opacity="1.0">BLE HID</text>
+<text x="1325.0" y="353" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="11" font-weight="normal" fill="#475569" text-anchor="middle" opacity="1.0">键盘 / 游戏手柄</text>
+<rect x="1200" y="415" width="250" height="95" rx="10" ry="10" fill="#dcfce7" stroke="#15803d" stroke-width="1.5"/>
+<text x="1325.0" y="439" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="15" font-weight="bold" fill="#0f172a" text-anchor="middle" opacity="1.0">PC 接收端</text>
+<text x="1325.0" y="461" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="11" font-weight="normal" fill="#475569" text-anchor="middle" opacity="1.0">Wi-Fi UDP</text>
+<text x="1325.0" y="478" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="11" font-weight="normal" fill="#475569" text-anchor="middle" opacity="1.0">麦克风音频</text>
+<rect x="1200" y="545" width="250" height="80" rx="10" ry="10" fill="#dcfce7" stroke="#15803d" stroke-width="1.5"/>
+<text x="1325.0" y="569" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="15" font-weight="bold" fill="#0f172a" text-anchor="middle" opacity="1.0">USB-C</text>
+<text x="1325.0" y="591" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="11" font-weight="normal" fill="#475569" text-anchor="middle" opacity="1.0">充电 + USB Serial/JTAG</text>
+<path d="M 290 175 H 420 V 330 H 560" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="420" y="165" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="11" fill="#475569" text-anchor="middle" stroke="#ffffff" stroke-width="4" paint-order="stroke">SPI2 + DMA</text>
+<path d="M 290 292 H 455 V 370 H 560" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="455" y="282" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="11" fill="#475569" text-anchor="middle" stroke="#ffffff" stroke-width="4" paint-order="stroke">GPIO 中断</text>
+<line x1="290" y1="415" x2="560" y2="415" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="425" y="405" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="11" fill="#475569" text-anchor="middle" stroke="#ffffff" stroke-width="4" paint-order="stroke">I2C</text>
+<path d="M 290 550 H 500 V 455 H 560" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="500" y="540" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="11" fill="#475569" text-anchor="middle" stroke="#ffffff" stroke-width="4" paint-order="stroke">I2S0 / I2S1</text>
+<path d="M 290 672 H 525 V 505 H 560" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="525" y="662" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="11" fill="#475569" text-anchor="middle" stroke="#ffffff" stroke-width="4" paint-order="stroke">SPI3</text>
+<path d="M 1200 205 H 1085 V 330 H 940" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="1085" y="195" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="11" fill="#475569" text-anchor="middle" stroke="#ffffff" stroke-width="4" paint-order="stroke">Wi-Fi HTTPS / WebSocket</text>
+<line x1="1200" y1="337" x2="940" y2="337" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="1070" y="327" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="11" fill="#475569" text-anchor="middle" stroke="#ffffff" stroke-width="4" paint-order="stroke">BLE HID</text>
+<path d="M 1200 462 H 1095 V 420 H 940" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="1095" y="452" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="11" fill="#475569" text-anchor="middle" stroke="#ffffff" stroke-width="4" paint-order="stroke">Wi-Fi UDP</text>
+<path d="M 1200 585 H 1105 V 520 H 940" fill="none" stroke="#475569" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#arrow)"/>
+<text x="1105" y="575" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="11" fill="#475569" text-anchor="middle" stroke="#ffffff" stroke-width="4" paint-order="stroke">USB Serial / JTAG</text>
+<rect x="60" y="760" width="1390" height="170" rx="14" ry="14" fill="#fef3c7" stroke="#b45309" stroke-width="1.5"/>
+<text x="80" y="790" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="17" font-weight="bold" fill="#92400e" text-anchor="start" opacity="1.0">电源子系统</text>
+<rect x="80" y="815" width="150" height="75" rx="8" ry="8" fill="#fffbeb" stroke="#b45309" stroke-width="1.2"/>
+<text x="155.0" y="843" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="13" font-weight="bold" fill="#92400e" text-anchor="middle" opacity="1.0">USB-C 5V</text>
+<text x="155.0" y="865" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="10" font-weight="normal" fill="#b45309" text-anchor="middle" opacity="1.0">输入 / 充电</text>
+<rect x="275" y="815" width="170" height="75" rx="8" ry="8" fill="#fffbeb" stroke="#b45309" stroke-width="1.2"/>
+<text x="360.0" y="843" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="13" font-weight="bold" fill="#92400e" text-anchor="middle" opacity="1.0">TP4056 充电</text>
+<text x="360.0" y="865" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="10" font-weight="normal" fill="#b45309" text-anchor="middle" opacity="1.0">限流 / 状态指示</text>
+<rect x="490" y="815" width="170" height="75" rx="8" ry="8" fill="#fffbeb" stroke="#b45309" stroke-width="1.2"/>
+<text x="575.0" y="843" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="13" font-weight="bold" fill="#92400e" text-anchor="middle" opacity="1.0">3.7V 锂电池</text>
+<text x="575.0" y="865" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="10" font-weight="normal" fill="#b45309" text-anchor="middle" opacity="1.0">必须带保护板</text>
+<rect x="705" y="815" width="170" height="75" rx="8" ry="8" fill="#fffbeb" stroke="#b45309" stroke-width="1.2"/>
+<text x="790.0" y="843" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="13" font-weight="bold" fill="#92400e" text-anchor="middle" opacity="1.0">SY8088 3.3V</text>
+<text x="790.0" y="865" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="10" font-weight="normal" fill="#b45309" text-anchor="middle" opacity="1.0">DC-DC 降压</text>
+<rect x="920" y="815" width="170" height="75" rx="8" ry="8" fill="#fffbeb" stroke="#b45309" stroke-width="1.2"/>
+<text x="1005.0" y="843" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="13" font-weight="bold" fill="#92400e" text-anchor="middle" opacity="1.0">电量计（外挂/待补）</text>
+<text x="1005.0" y="865" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="10" font-weight="normal" fill="#b45309" text-anchor="middle" opacity="1.0">I2C · MAX17048/ADS1115</text>
+<line x1="230" y1="852" x2="275" y2="852" stroke="#b45309" stroke-width="1.6" marker-end="url(#arrow)"/>
+<line x1="445" y1="852" x2="490" y2="852" stroke="#b45309" stroke-width="1.6" marker-end="url(#arrow)"/>
+<line x1="660" y1="852" x2="705" y2="852" stroke="#b45309" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M 575 815 V 800 H 1005 V 815" fill="none" stroke="#475569" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#arrow)"/>
+<text x="790" y="795" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="11" fill="#475569" text-anchor="middle" stroke="#ffffff" stroke-width="4" paint-order="stroke">VBAT 采样</text>
+<path d="M 790 815 V 650" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="800" y="720" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="11" fill="#475569" text-anchor="middle" stroke="#ffffff" stroke-width="4" paint-order="stroke">3.3V</text>
+<path d="M 1005 815 V 730 H 900 V 650" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="912" y="720" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="11" fill="#475569" text-anchor="middle" stroke="#ffffff" stroke-width="4" paint-order="stroke">I2C 电量计</text>
+<text x="1130" y="843" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="11" font-weight="normal" fill="#92400e" text-anchor="start" opacity="1.0">低电保护：3.4V 降载 / 3.3V 保存并休眠（需电量计）</text>
+<text x="1130" y="865" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="11" font-weight="normal" fill="#92400e" text-anchor="start" opacity="1.0">Light Sleep 5–10mA · 按键 GPIO 唤醒</text>
+<text x="50" y="960" font-family="Microsoft YaHei, Segoe UI, PingFang SC, sans-serif" font-size="10" font-weight="normal" fill="#94a3b8" text-anchor="start" opacity="1.0">注：引脚以 Gerber_PCB1_2026-10-27 的数据文件为准；当前 PCB 无 BAT_ADC/电量计，需外挂 I2C 电量计；三固件不同时运行。</text>
+</svg>
