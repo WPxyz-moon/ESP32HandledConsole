@@ -1,0 +1,19 @@
+# ESP-IDF build output and local configuration
+build/
+sdkconfig
+sdkconfig.old
+managed_components/
+dependencies.lock
+
+# IDE and local tooling
+.vscode/
+.claude/
+.devcontainer/
+.clangd
+
+# Local output
+output/
+
+# OS
+.DS_Store
+Thumbs.db
