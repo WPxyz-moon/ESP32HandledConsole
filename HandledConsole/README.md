@@ -19,6 +19,20 @@ Stage 0 只验证：
 - `factory → game → ai → factory` 分区切换可用；
 - 串口能看到当前分区、PSRAM 大小、事件总线收发。
 
+## VS Code
+
+用 VS Code **直接打开 `HandledConsole` 文件夹**作为工作区，不要打开仓库根目录。
+
+ESP-IDF 扩展把当前工作区根目录当成工程目录；如果打开的是仓库根目录，它会执行：
+
+```text
+cmake -S D:\Develop\Porjects\ESP32HandledConsole ...
+```
+
+于是报 `source directory ... does not appear to contain CMakeLists.txt`。打开 `HandledConsole` 后，`-S` 才会指向包含 `CMakeLists.txt` 的目录。
+
+`game` / `ai` 是独立工程，分别在 VS Code 里打开 `HandledConsole/game`、`HandledConsole/ai` 编译。
+
 ## 构建
 
 每个工程独立构建：
