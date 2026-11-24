@@ -17,7 +17,7 @@
 
 ## 代码
 
-- [固件工程（阶段 0 骨架）](HandledConsole/README.md)
+- [固件工程（BSP 驱动层已落地）](HandledConsole/README.md)
 
 ## 参考项目
 
