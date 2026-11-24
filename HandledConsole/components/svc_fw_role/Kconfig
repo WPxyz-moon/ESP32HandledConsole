@@ -1,0 +1,17 @@
+menu "Firmware role"
+
+    choice FW_ROLE
+        prompt "Firmware role"
+        default FW_ROLE_FACTORY
+
+        config FW_ROLE_FACTORY
+            bool "factory (main system)"
+
+        config FW_ROLE_GAME
+            bool "game (ota_0)"
+
+        config FW_ROLE_AI
+            bool "ai (ota_1)"
+    endchoice
+
+endmenu

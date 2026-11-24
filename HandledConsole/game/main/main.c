@@ -1,7 +1,9 @@
 #include "app_ops.h"
 #include "bsp_board.h"
 #include "event_bus.h"
+#include "fw_role.h"
 #include "ota_manager.h"
+#include "system.h"
 
 #include "esp_heap_caps.h"
 #include "esp_log.h"
@@ -11,7 +13,7 @@
 #include "freertos/task.h"
 
 #define TAG          "game"
-#define NEXT_SUBTYPE ESP_PARTITION_SUBTYPE_APP_OTA_1
+#define NEXT_TARGET  FW_ROLE_AI
 #define AUTO_SWITCH  1
 
 static esp_err_t skeleton_init(app_t *app)
@@ -50,15 +52,30 @@ static const app_ops_t skeleton_app = {
     .exit = skeleton_exit,
 };
 
+static void on_boot_event(const app_event_t *ev, void *ctx)
+{
+    (void)ctx;
+    ESP_LOGI(TAG, "event bus ok, type=%d, ts=%u",
+             ev->type, (unsigned)ev->timestamp_ms);
+}
+
 void app_main(void)
 {
     ESP_LOGI(TAG, "==== %s boot ====", bsp_board_name());
+    ESP_LOGI(TAG, "role compiled=%s running=%s",
+             fw_role_name(fw_role_compiled()),
+             fw_role_name(fw_role_running()));
     ESP_LOGI(TAG, "running partition: %s", ota_manager_running_label());
     ESP_LOGI(TAG, "reset reason: %d", (int)esp_reset_reason());
     ESP_LOGI(TAG, "PSRAM total: %u bytes",
              (unsigned)heap_caps_get_total_size(MALLOC_CAP_SPIRAM));
 
+    if (!fw_role_check()) {
+        ESP_LOGE(TAG, "continuing with compiled role");
+    }
+
     ESP_ERROR_CHECK(event_bus_init());
+    ESP_ERROR_CHECK(event_bus_subscribe(EVT_SYS_BOOT, on_boot_event, NULL));
 
     app_event_t event = { .type = EVT_SYS_BOOT };
     esp_err_t err = event_bus_post(&event, pdMS_TO_TICKS(100));
@@ -66,18 +83,18 @@ void app_main(void)
         ESP_LOGW(TAG, "event post failed: %s", esp_err_to_name(err));
     }
 
-    app_event_t received;
-    if (event_bus_receive(&received, pdMS_TO_TICKS(100)) == ESP_OK) {
-        ESP_LOGI(TAG, "event bus ok, type=%d", received.type);
-    }
-
     ESP_ERROR_CHECK(app_manager_start(&skeleton_app));
 
 #if AUTO_SWITCH
     vTaskDelay(pdMS_TO_TICKS(3000));
-    ESP_LOGI(TAG, "switching to next partition");
-    err = ota_manager_boot(NEXT_SUBTYPE);
-    ESP_LOGE(TAG, "switch failed: %s", esp_err_to_name(err));
+    ESP_LOGI(TAG, "switching to %s", fw_role_name(NEXT_TARGET));
+    err = system_prepare_switch();
+    if (err != ESP_OK) {
+        ESP_LOGE(TAG, "prepare switch failed: %s", esp_err_to_name(err));
+    } else {
+        err = ota_manager_switch(NEXT_TARGET);
+        ESP_LOGE(TAG, "switch failed: %s", esp_err_to_name(err));
+    }
 #else
     ESP_LOGI(TAG, "AUTO_SWITCH disabled, staying in this firmware");
 #endif

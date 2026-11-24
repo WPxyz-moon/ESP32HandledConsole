@@ -6,7 +6,8 @@
 HandledConsole/
   CMakeLists.txt     # factory 主系统工程
   main/              # factory 应用入口
-  components/        # bsp_board, svc_event, app_core, svc_ota
+  components/        # bsp_board, svc_fw_role, svc_event, svc_ota,
+                     # svc_system, svc_settings, app_core
   game/              # 游戏系统（ota_0）
   ai/                # AI 系统（ota_1）
   partitions.csv     # 16MB 分区表

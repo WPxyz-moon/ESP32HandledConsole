@@ -1,5 +1,5 @@
 idf_component_register(
     SRCS "ota_manager.c"
     INCLUDE_DIRS "include"
-    REQUIRES app_update esp_partition
+    REQUIRES svc_fw_role app_update esp_partition
 )
