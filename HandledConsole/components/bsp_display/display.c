@@ -128,6 +128,22 @@ static esp_err_t panel_init(void)
     return esp_lcd_panel_disp_on_off(s_panel, true);
 }
 
+static void panel_cleanup(void)
+{
+    if (s_panel != NULL) {
+        esp_lcd_panel_del(s_panel);
+        s_panel = NULL;
+    }
+    if (s_io != NULL) {
+        esp_lcd_panel_io_del(s_io);
+        s_io = NULL;
+    }
+    if (s_spi_bus_inited) {
+        spi_bus_free(SPI2_HOST);
+        s_spi_bus_inited = false;
+    }
+}
+
 esp_err_t bsp_display_init(void)
 {
     if (s_inited) {
@@ -154,13 +170,25 @@ esp_err_t bsp_display_init(void)
         return ESP_ERR_NO_MEM;
     }
 
-    esp_err_t err = panel_init();
+    esp_err_t err = ESP_FAIL;
+    for (int attempt = 0; attempt < 3; ++attempt) {
+        err = panel_init();
+        if (err == ESP_OK) {
+            break;
+        }
+        ESP_LOGW(TAG, "panel init attempt %d failed: %s",
+                 attempt + 1, esp_err_to_name(err));
+        panel_cleanup();
+        vTaskDelay(pdMS_TO_TICKS(100));
+    }
     if (err != ESP_OK) {
-        ESP_LOGE(TAG, "panel init failed: %s", esp_err_to_name(err));
+        ESP_LOGE(TAG, "panel init failed after 3 attempts: %s",
+                 esp_err_to_name(err));
         bsp_display_deinit();
         return err;
     }
 
+    s_bounce_index = 0;
     s_inited = true;
     ESP_LOGI(TAG, "ST7789 %dx%d ready", BSP_DISPLAY_WIDTH, BSP_DISPLAY_HEIGHT);
     return ESP_OK;
@@ -172,18 +200,7 @@ esp_err_t bsp_display_deinit(void)
         return ESP_OK;
     }
 
-    if (s_panel != NULL) {
-        esp_lcd_panel_del(s_panel);
-        s_panel = NULL;
-    }
-    if (s_io != NULL) {
-        esp_lcd_panel_io_del(s_io);
-        s_io = NULL;
-    }
-    if (s_spi_bus_inited) {
-        spi_bus_free(SPI2_HOST);
-        s_spi_bus_inited = false;
-    }
+    panel_cleanup();
 
     if (s_backlight_inited) {
         ledc_stop(LEDC_LOW_SPEED_MODE, BSP_DISPLAY_BACKLIGHT_CHANNEL, 0);

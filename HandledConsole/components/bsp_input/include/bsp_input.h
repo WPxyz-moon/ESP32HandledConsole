@@ -46,6 +46,9 @@ typedef void (*bsp_key_cb_t)(const bsp_key_event_t *ev, void *ctx);
 esp_err_t bsp_input_init(bsp_key_cb_t cb, void *ctx);
 esp_err_t bsp_input_deinit(void);
 
+/* Change the callback after init, e.g. after bsp_board_init(). */
+esp_err_t bsp_input_set_callback(bsp_key_cb_t cb, void *ctx);
+
 /* Bit n set means bsp_key_id_t n is currently pressed. */
 uint32_t bsp_input_state(void);
 bool bsp_input_pressed(bsp_key_id_t id);

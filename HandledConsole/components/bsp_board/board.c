@@ -1,6 +1,13 @@
 #include "bsp_board.h"
 #include "board_config.h"
 
+#include "bsp_audio.h"
+#include "bsp_display.h"
+#include "bsp_imu.h"
+#include "bsp_input.h"
+#include "bsp_power.h"
+#include "bsp_storage.h"
+
 #include "driver/gpio.h"
 #include "esp_check.h"
 #include "esp_log.h"
@@ -33,7 +40,15 @@ esp_err_t bsp_board_early_init(void)
 esp_err_t bsp_board_init(void)
 {
     ESP_RETURN_ON_ERROR(bsp_board_early_init(), TAG, "early init failed");
-    ESP_LOGI(TAG, "board: %s", BSP_BOARD_NAME);
+    ESP_RETURN_ON_ERROR(bsp_storage_nvs_init(), TAG, "NVS init");
+    ESP_RETURN_ON_ERROR(bsp_display_init(), TAG, "display init");
+    ESP_RETURN_ON_ERROR(bsp_input_init(NULL, NULL), TAG, "input init");
+    ESP_RETURN_ON_ERROR(bsp_imu_init(100), TAG, "IMU init");
+    ESP_RETURN_ON_ERROR(bsp_audio_init(), TAG, "audio init");
+    ESP_RETURN_ON_ERROR(bsp_storage_init(), TAG, "storage init");
+    ESP_RETURN_ON_ERROR(bsp_power_init(), TAG, "power init");
+
+    ESP_LOGI(TAG, "board ready: %s (backlight off)", BSP_BOARD_NAME);
     return ESP_OK;
 }
 

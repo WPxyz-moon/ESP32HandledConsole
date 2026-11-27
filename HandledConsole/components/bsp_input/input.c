@@ -36,6 +36,8 @@ static uint32_t s_candidate_mask;
 static TickType_t s_candidate_tick[BSP_KEY_COUNT];
 static TickType_t s_press_tick[BSP_KEY_COUNT];
 static bool s_long_sent[BSP_KEY_COUNT];
+static bool s_suppress_repeat[BSP_KEY_COUNT];
+static TickType_t s_last_repeat_tick[BSP_KEY_COUNT];
 static uint32_t s_long_press_ms = BSP_KEY_LONG_PRESS_MS;
 static bool s_inited;
 static bool s_isr_service_owned;
@@ -118,24 +120,38 @@ static void input_task(void *arg)
                 s_stable_mask |= bit;
                 s_press_tick[i] = now;
                 s_long_sent[i] = false;
+                s_suppress_repeat[i] = false;
+                s_last_repeat_tick[i] = now;
                 emit((bsp_key_id_t)i, BSP_KEY_EVT_DOWN, 0);
             } else {
                 TickType_t held = now - s_press_tick[i];
                 s_stable_mask &= ~bit;
                 s_long_sent[i] = false;
+                s_suppress_repeat[i] = false;
                 emit((bsp_key_id_t)i, BSP_KEY_EVT_UP, held);
             }
         }
 
         for (int i = 0; i < BSP_KEY_COUNT; i++) {
             uint32_t bit = 1U << i;
-            if ((s_stable_mask & bit) == 0 || s_long_sent[i]) {
+            if ((s_stable_mask & bit) == 0) {
                 continue;
             }
+
             TickType_t held = now - s_press_tick[i];
-            if (held >= pdMS_TO_TICKS(s_long_press_ms)) {
+            if (held < pdMS_TO_TICKS(s_long_press_ms)) {
+                continue;
+            }
+
+            if (!s_long_sent[i]) {
                 s_long_sent[i] = true;
+                s_last_repeat_tick[i] = now;
                 emit((bsp_key_id_t)i, BSP_KEY_EVT_LONG, held);
+            } else if (!s_suppress_repeat[i] &&
+                       (now - s_last_repeat_tick[i]) >=
+                           pdMS_TO_TICKS(BSP_KEY_REPEAT_MS)) {
+                s_last_repeat_tick[i] = now;
+                emit((bsp_key_id_t)i, BSP_KEY_EVT_REPEAT, held);
             }
         }
     }
@@ -182,10 +198,13 @@ esp_err_t bsp_input_init(bsp_key_cb_t cb, void *ctx)
         s_candidate_tick[i] = now;
         s_press_tick[i] = now;
         s_long_sent[i] = false;
+        s_suppress_repeat[i] = false;
+        s_last_repeat_tick[i] = now;
         if (pressed_at((bsp_key_id_t)i)) {
             s_stable_mask |= 1U << i;
             s_candidate_mask |= 1U << i;
             s_long_sent[i] = true;  /* don't fire LONG for a key held at boot */
+            s_suppress_repeat[i] = true;
         }
         ESP_RETURN_ON_ERROR(
             gpio_isr_handler_add(s_pins[i], key_isr, (void *)(uintptr_t)i),
@@ -199,6 +218,13 @@ esp_err_t bsp_input_init(bsp_key_cb_t cb, void *ctx)
 
     s_inited = true;
     ESP_LOGI(TAG, "%d keys ready", BSP_KEY_COUNT);
+    return ESP_OK;
+}
+
+esp_err_t bsp_input_set_callback(bsp_key_cb_t cb, void *ctx)
+{
+    s_cb = cb;
+    s_cb_ctx = ctx;
     return ESP_OK;
 }
 

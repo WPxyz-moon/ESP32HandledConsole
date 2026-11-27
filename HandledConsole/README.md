@@ -20,19 +20,23 @@ Stage 0 只验证：
 - `factory → game → ai → factory` 分区切换可用；
 - 串口能看到当前分区、PSRAM 大小、事件总线收发。
 
-## BSP 驱动层（阶段 1 起点）
+## BSP 驱动层（阶段 1）
 
 `components/bsp_*` 已实现并可编译：
 
 | 组件 | 内容 |
 |---|---|
-| `bsp_board` | 板级早期初始化：背光先关、LED 熄灭 |
-| `bsp_display` | ST7789 240×280、SPI2 DMA、背光 LEDC |
-| `bsp_input` | 8 键中断 + 20 ms 消抖 + 长按 |
-| `bsp_imu` | LSM6DS3TR-C I2C 轮询 |
-| `bsp_audio` | I2S0 麦克风 + I2S1 功放 |
-| `bsp_storage` | NVS / microSD / assets SPIFFS |
+| `bsp_board` | 早期初始化 + 完整 bring-up 顺序：NVS、屏、键、IMU、音频、存储、电源 |
+| `bsp_display` | ST7789 240×280、SPI2 DMA、背光 LEDC、初始化重试 3 次 |
+| `bsp_input` | 8 键中断 + 20 ms 消抖 + 长按 + 100 ms 重复 |
+| `bsp_imu` | LSM6DS3TR-C I2C 轮询；连续 3 次失败复位 I2C |
+| `bsp_audio` | I2S0 麦克风 + I2S1 功放、环形缓冲、音量/采样率 |
+| `bsp_storage` | NVS / microSD / assets SPIFFS，SD 启动重试 3 次 |
 | `bsp_power` | LED 与 Light Sleep 接口 |
+
+`bsp_board_init()` 会依次初始化以上模块，但**不点亮背光**；应用在显示第一帧后
+调用 `bsp_display_set_backlight()`。如果固件只用部分外设，可直接调用单独的
+`bsp_*_init()`，不经过 `bsp_board_init()`。
 
 控制台固定使用 **USB Serial/JTAG（GPIO19/20）**。UART0 的 GPIO43/44 是
 LCD_DC/LCD_BL，不能再用来打日志。驱动接口与验收见
