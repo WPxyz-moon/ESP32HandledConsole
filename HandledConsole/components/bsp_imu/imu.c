@@ -40,6 +40,7 @@ static uint32_t s_period_ms = 10;
 static bsp_imu_cb_t s_cb;
 static void *s_cb_ctx;
 static bool s_inited;
+static uint32_t s_consecutive_errors;
 static bsp_imu_stats_t s_stats;
 
 static esp_err_t reg_write(uint8_t reg, uint8_t value)
@@ -74,6 +75,7 @@ static void imu_task(void *arg)
         uint8_t buf[IMU_OUT_BYTES];
         esp_err_t err = reg_read(IMU_REG_OUT_G, buf, sizeof(buf));
         if (err == ESP_OK) {
+            s_consecutive_errors = 0;
             bsp_imu_raw_t raw = {
                 .gx = (int16_t)((buf[1] << 8) | buf[0]),
                 .gy = (int16_t)((buf[3] << 8) | buf[2]),
@@ -100,8 +102,16 @@ static void imu_task(void *arg)
             }
         } else {
             s_stats.read_errors++;
-            if ((s_stats.read_errors % 100U) == 1U) {
-                ESP_LOGW(TAG, "read failed: %s", esp_err_to_name(err));
+            s_consecutive_errors++;
+            if (s_consecutive_errors >= 3) {
+                ESP_LOGW(TAG, "3 consecutive read failures (%s), resetting I2C bus",
+                         esp_err_to_name(err));
+                esp_err_t reset_err = i2c_master_bus_reset(s_bus);
+                if (reset_err != ESP_OK) {
+                    ESP_LOGE(TAG, "I2C bus reset failed: %s",
+                             esp_err_to_name(reset_err));
+                }
+                s_consecutive_errors = 0;
             }
         }
 

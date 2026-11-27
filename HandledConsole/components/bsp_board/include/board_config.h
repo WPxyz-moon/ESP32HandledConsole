@@ -88,3 +88,4 @@
 /* Input */
 #define BSP_KEY_DEBOUNCE_MS      20
 #define BSP_KEY_LONG_PRESS_MS    1000
+#define BSP_KEY_REPEAT_MS        100
