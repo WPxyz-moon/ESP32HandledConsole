@@ -6,8 +6,8 @@
 HandledConsole/
   CMakeLists.txt     # factory 主系统工程
   main/              # factory 应用入口
-  components/        # bsp_board, svc_fw_role, svc_event, svc_ota,
-                     # svc_system, svc_settings, app_core
+  components/        # bsp_* 驱动、svc_fw_role、svc_event、svc_ota、
+                     # svc_system、svc_settings、app_core
   game/              # 游戏系统（ota_0）
   ai/                # AI 系统（ota_1）
   partitions.csv     # 16MB 分区表
@@ -19,6 +19,24 @@ Stage 0 只验证：
 - 共享组件能同时编进三个固件；
 - `factory → game → ai → factory` 分区切换可用；
 - 串口能看到当前分区、PSRAM 大小、事件总线收发。
+
+## BSP 驱动层（阶段 1 起点）
+
+`components/bsp_*` 已实现并可编译：
+
+| 组件 | 内容 |
+|---|---|
+| `bsp_board` | 板级早期初始化：背光先关、LED 熄灭 |
+| `bsp_display` | ST7789 240×280、SPI2 DMA、背光 LEDC |
+| `bsp_input` | 8 键中断 + 20 ms 消抖 + 长按 |
+| `bsp_imu` | LSM6DS3TR-C I2C 轮询 |
+| `bsp_audio` | I2S0 麦克风 + I2S1 功放 |
+| `bsp_storage` | NVS / microSD / assets SPIFFS |
+| `bsp_power` | LED 与 Light Sleep 接口 |
+
+控制台固定使用 **USB Serial/JTAG（GPIO19/20）**。UART0 的 GPIO43/44 是
+LCD_DC/LCD_BL，不能再用来打日志。驱动接口与验收见
+[06-驱动层设计](../docs/06-驱动层设计.md)。
 
 ## VS Code
 

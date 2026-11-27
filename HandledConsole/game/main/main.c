@@ -61,6 +61,9 @@ static void on_boot_event(const app_event_t *ev, void *ctx)
 
 void app_main(void)
 {
+    /* Must be first: the backlight is pulled up by hardware until we drive it low. */
+    ESP_ERROR_CHECK(bsp_board_early_init());
+
     ESP_LOGI(TAG, "==== %s boot ====", bsp_board_name());
     ESP_LOGI(TAG, "role compiled=%s running=%s",
              fw_role_name(fw_role_compiled()),

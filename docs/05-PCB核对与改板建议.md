@@ -179,7 +179,7 @@ VSYS_5V ──► U1 SY8088 降压 ──► L1 ──► 3V3 ──► ESP32-S3
 | 项 | 参考项目 Rev2 | 本项目实际 PCB | 影响 |
 |---|---|---|---|
 | 模组 | ESP32-S3 N16R8 | `ESP32-S3-WROOM-1U-N16R8` | 1U 必须外接 IPEX 天线 |
-| 按键 | 7 键（无 CTRL） | **8 键，CTRL=GPIO8** | 固件增加 `BSP_KEY_CTRL`，不再需要长按复用 |
+| 按键 | 7 键（无 CTRL） | **8 键，CTRL=GPIO8** | 固件增加 `BSP_KEY_GPIO_CTRL`，不再需要长按复用 |
 | LCD DC | GPIO44 | **GPIO43** | 固件必须改，照抄参考会点不亮/花屏 |
 | LCD BL | GPIO43 | **GPIO44** | 固件必须改，否则背光不受控 |
 | LCD CS/SCK/MOSI/RST | 42/21/14/13 | 42/21/14/13 | 一致 |
@@ -264,8 +264,8 @@ U3_24/25 为单脚网络，没有引出测试点。当前方案不使用这两�
 | `BSP_LCD_BL` | **GPIO44**（不要用参考的 43） |
 | `BSP_LCD_CS/CLK/MOSI/RST` | 42/21/14/13 |
 | `BSP_SD_CS/CLK/MOSI/MISO` | 38/40/39/41 |
-| `BSP_KEY_CTRL` | **GPIO8**（新增） |
-| `BSP_KEY_UP/DOWN/LEFT/RIGHT/A/B/START` | 16/15/17/7/4/5/6 |
+| `BSP_KEY_GPIO_CTRL` | **GPIO8**（新增） |
+| `BSP_KEY_GPIO_UP/DOWN/LEFT/RIGHT/A/B/START` | 16/15/17/7/4/5/6 |
 | `BSP_LED` | GPIO18，**低电平点亮** |
 | `BSP_BAT_ADC` | 不存在；不实现电量采样，不预留接口 |
 | SD 卡检测 | 无 CD；挂载失败重试 |
